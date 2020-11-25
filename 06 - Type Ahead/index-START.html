@@ -21,7 +21,6 @@
       fetch(endpoint)
         .then((blob) => blob.json())
         .then((data) => cities.push(...data));
-      console.log(cities);
 
       function findMatches(wordToMatch, cities) {
         return cities.filter((place) => {
@@ -51,7 +50,6 @@
           </li>`;
           })
           .join("");
-        console.log(html);
         suggestions.innerHTML = html;
       }
 
