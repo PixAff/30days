@@ -1,20 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
-    <div class="speed">
-      <div class="speed-bar">1×</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Speed Scrubber</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <video
+        class="flex"
+        width="765"
+        height="430"
+        src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
     </div>
-  </div>
 
-<script>
-</script>
-</body>
+    <script>
+      const speed = document.querySelector(".speed");
+      const bar = document.querySelector(".speed-bar");
+      const video = document.querySelector(".flex");
+
+      let clicked = false;
+
+      speed.addEventListener("mousedown", setSpeed);
+
+      // speed.addEventListener("mouseleave", () => {
+      //   clicked = false;
+      // });
+
+      window.addEventListener("mouseup", () => {
+        clicked = false;
+      });
+
+      function changeSpeed(e) {
+        if (!clicked) return;
+        const y = e.pageY - this.offsetTop;
+        const percent = Math.round((y / this.offsetHeight) * 100);
+        const min = 0.4;
+        const max = 4;
+        const height = percent + "%";
+        const playbackRate = (percent / 100) * (max - min) + min;
+        bar.style.height = height;
+        bar.textContent = playbackRate.toFixed(2) + "x";
+        video.playbackRate = playbackRate;
+      }
+
+      function setSpeed(e) {
+        e.preventDefault()
+        clicked = true;
+        const y = e.pageY - this.offsetTop;
+        const percent = Math.round((y / this.offsetHeight) * 100);
+        const min = 0.4;
+        const max = 4;
+        const height = percent + "%";
+        const playbackRate = (percent / 100) * (max - min) + min;
+        bar.style.height = height;
+        bar.textContent = playbackRate.toFixed(2) + "x";
+        video.playbackRate = playbackRate;
+      }
+
+      speed.addEventListener("mousemove", changeSpeed);
+    </script>
+  </body>
 </html>
